@@ -1,6 +1,7 @@
 body {
   font-family: Arial;
   margin: 0;
+  padding: 0;
 }
 
 * {
@@ -71,7 +72,12 @@ img {
   padding: 2px 16px;
   color: white;
 }
-
+.row{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 .row:after {
   content: "";
   display: table;
@@ -80,9 +86,7 @@ img {
 
 /* Six columns side by side */
 .column {
-  float: left;
-  width: 18%;
-  height: 300px;
+  
 }
 
 /* Add a transparency effect for thumnbail images */
@@ -101,8 +105,35 @@ img {
   display: flex !important;
   justify-content: center;
   align-items: center;
+  margin: 0;
+  padding: 0;
 }
 
 .slider_items img{
   height: 300px;
+}
+
+.from{
+  display: flex;
+  justify-content: center;
+}
+
+.wrap_from{
+  width: 400px;
+}
+.wrap_from .from_group{
+  width: 100%;
+  height: 50px;
+  padding:0 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.wrap_from .from_group label{
+  font-size: 18px;
+  font-weight: 500px;
+}
+.wrap_from .from_group ~ input,
+.wrap_from .from_group textarea{
+  width: 50%;
 }

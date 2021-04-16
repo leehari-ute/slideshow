@@ -8,9 +8,8 @@ function App() {
 
     const [url,setUrl]=useState(null)
 	const [image,setImage]=useState(null)
-	const nameRef = useRef("")
-    const textAreaRef = useRef("")
-    const imgRef = useRef("")
+	const nameRef = useRef(null)
+    const textAreaRef = useRef(null)
 
     const [list,setList]=useState([])
 	const fetch=async()=>{
@@ -30,11 +29,9 @@ function App() {
 		if(e.target.files&&e.target.files[0])
 		{
 			const file=e.target.files[0]
-            console.log(file)
 			const check=file.name.match(/\.(jpg|jpeg|png|gif)$/)
 			if(check)
 			{
-                console.log(check)
 				setImage(file)
 				setUrl(URL.createObjectURL(file))
                 
@@ -52,7 +49,6 @@ function App() {
 			error=> console.log(error),
 			async ()=>{
 				const res=await storage.ref("images").child(image.name).getDownloadURL()
-				console.log(res)
 				res&&upDatabase(nameRef.current.value,textAreaRef.current.value,res)
 				//hidden()
 			}
@@ -64,14 +60,17 @@ function App() {
             des:des,
 			link:link
 		})
-		//setList([])
-		//fetch()
+        nameRef.current.value=''
+        textAreaRef.current.value = ''
+		setList([])
+		fetch()
 	}
     const settings = {
         dots: true,
         infinite: true,
         speed: 2000,
-        autoplay:true  ,
+        autoplay:true,
+        arrows:false,
         autoplaySpeed:2000,
         slidesToShow: 1,
         slidesToScroll: 1
@@ -81,42 +80,36 @@ function App() {
     <div className="App">
       <h1>Upload Image</h1>
     <hr/>
-    <div>
-        <form>
-            <div>
-                <button type="submit">Slide</button>
-            </div>
-        </form>
-        
-        <div >
-            <div>
+    <div className="from">
+        <div className="wrap_from" >
+            <div className="from_group">
                 <label htmlFor="name">Image Title</label>
                 <input type="text" placeholder="Name"
-                       value={nameRef?nameRef.current.value:''} required  ref={nameRef}/>
+                     required  ref={nameRef}/>
             </div> 
-            <div>
+            <div className="from_group">
                 <label htmlFor="des">Image Description</label>
-                <textarea value={textAreaRef?textAreaRef.current.value:''} rows="2"
+                <textarea rows="2"
                           placeholder="Description" required ref={textAreaRef}>
                 </textarea>
             </div>
-            <div>
+            <div className="from_group">
                 <label htmlFor="image">Upload Image</label>
-                <input type="file"  onChange={onChangeImage}  value={imgRef?imgRef.current.value:''} ref={imgRef}/>
+                <input type="file"  onChange={onChangeImage}/>
             </div>
-            <div>
-                <button type="submit" onClick={()=>upLoad()}>Submit</button>
+            <div className="from_group">
+                <button type="submit" onClick={upLoad}>Submit</button>
             </div>
         </div>
     </div>
     <hr/>
     <div>
-        <h2> Single Item</h2>
+        <h2> Slide Show</h2>
         {list.length>0&&(
         <Slider {...settings}>
            {
-                list.map((e)=>  (
-                    <div className="slider_items">
+                list.map((e,i)=>  (
+                    <div key={i} className="slider_items">
                         <img src={e.link}/>
                     </div>
                    
@@ -126,6 +119,21 @@ function App() {
         </Slider>
         )}
       </div>
+    <hr style={{margin:"40px 0"}}/>
+     
+      {list.length>0&&(
+           <div className="row">
+            {
+                list.map((e,i)=>(
+                    <div key={i} className="column" style={{margin:'15px 10px'}}>
+                        <img  src={e.link} style={{width:"300px", height:"300px", borderRadius:"30px"}}/>
+                        <h5 style={{textAlign:"center"}}>{e.name}</h5>
+                        <p style={{textAlign:"center"}}>{e.des}</p>
+                    </div>
+                ))
+            }
+          </div>
+      )}
  </div>)
 }
 
