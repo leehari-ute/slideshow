@@ -1,13 +1,13 @@
 import './App.css';
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
+import {Helmet} from 'react-helmet';
 import {useEffect, useRef, useState} from "react"
 import {storage,fire} from "./base"
 import Slider from "react-slick";
 function App() {
-
-    const [url,setUrl]=useState(null)
-	const [image,setImage]=useState(null)
+    const [url, setUrl]=useState(null)
+	const [image, setImage]=useState(null)
 	const nameRef = useRef(null)
     const textAreaRef = useRef(null)
 
@@ -34,7 +34,6 @@ function App() {
 			{
 				setImage(file)
 				setUrl(URL.createObjectURL(file))
-                
 			}
 		}
 	} 
@@ -77,7 +76,7 @@ function App() {
       };
 
   return (
-    <div className="App">
+    <div className="App"> 
       <h1>Upload Image</h1>
     <hr/>
     <div className="from">
