@@ -10,6 +10,7 @@ function App() {
 	const [image, setImage]=useState(null)
 	const nameRef = useRef(null)
     const textAreaRef = useRef(null)
+    const emailRef = useRef(null)
 
     const [list,setList]=useState([])
 	const fetch=async()=>{
@@ -48,19 +49,21 @@ function App() {
 			error=> console.log(error),
 			async ()=>{
 				const res=await storage.ref("images").child(image.name).getDownloadURL()
-				res&&upDatabase(nameRef.current.value,textAreaRef.current.value,res)
+				res&&upDatabase(nameRef.current.value,textAreaRef.current.value,emailRef.current.value,res)
 				//hidden()
 			}
 		)
 	}
-    const upDatabase=async(name,des,link)=>{
+    const upDatabase=async(name,des,email,link)=>{
 		await fire.firestore().collection('Image').add({
 			name:name,
             des:des,
+            email:email,
 			link:link
 		})
         nameRef.current.value=''
         textAreaRef.current.value = ''
+        emailRef.current.value = ''
 		setList([])
 		fetch()
 	}
@@ -92,6 +95,11 @@ function App() {
                           placeholder="Description" required ref={textAreaRef}>
                 </textarea>
             </div>
+            <div className="from_group">
+                <label htmlFor="email">Email</label>
+                <input type="text" placeholder="Email"
+                     required  ref={emailRef}/>
+            </div> 
             <div className="from_group">
                 <label htmlFor="image">Upload Image</label>
                 <input type="file"  onChange={onChangeImage}/>
